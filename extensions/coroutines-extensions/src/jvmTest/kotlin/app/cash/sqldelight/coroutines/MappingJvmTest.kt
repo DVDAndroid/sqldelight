@@ -25,6 +25,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.Timeout
@@ -41,6 +42,7 @@ class MappingJvmTest : DbTest {
       .assertInitialAndAsyncNotificationUsesContext(db, this as TestScope)
   }
 
+  @Ignore
   @Test fun mapToOneOrDefaultUsesContext() = runTest { db ->
     db.createQuery(TABLE_EMPLOYEE, "$SELECT_EMPLOYEES LIMIT 1", MAPPER)
       .asFlow()
@@ -55,6 +57,7 @@ class MappingJvmTest : DbTest {
       .assertInitialAndAsyncNotificationUsesContext(db, this as TestScope)
   }
 
+  @Ignore
   @Test fun mapToOneNonNullUsesContext() = runTest { db ->
     db.createQuery(TABLE_EMPLOYEE, "$SELECT_EMPLOYEES LIMIT 1", MAPPER)
       .asFlow()

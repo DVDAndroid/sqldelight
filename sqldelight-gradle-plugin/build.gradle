@@ -79,7 +79,7 @@ tasks.named('test') {
       ":runtime:publishKotlinMultiplatformPublicationToInstallLocallyRepository",
       ":runtime:publishJvmPublicationToInstallLocallyRepository",
       ":runtime:publishJsPublicationToInstallLocallyRepository",
-      ":drivers:android-driver:publishAllPublicationsToInstallLocallyRepository",
+//      ":drivers:android-driver:publishAllPublicationsToInstallLocallyRepository",
       ":drivers:sqlite-driver:publishAllPublicationsToInstallLocallyRepository",
       ":drivers:jdbc-driver:publishAllPublicationsToInstallLocallyRepository",
       ":sqlite-migrations:publishAllPublicationsToInstallLocallyRepository",
@@ -158,7 +158,7 @@ tasks.named("grammarkitTest") {
 
 tasks.named("instrumentationTest") {
   dependsOn(
-      ":drivers:android-driver:publishAllPublicationsToInstallLocallyRepository",
+//      ":drivers:android-driver:publishAllPublicationsToInstallLocallyRepository",
       ":dialects:sqlite-3-18:publishAllPublicationsToInstallLocallyRepository",
       ":sqldelight-compiler:dialect:publishAllPublicationsToInstallLocallyRepository",
       ":runtime:publishKotlinMultiplatformPublicationToInstallLocallyRepository",
