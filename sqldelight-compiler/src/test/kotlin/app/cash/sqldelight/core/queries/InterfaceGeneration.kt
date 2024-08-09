@@ -45,7 +45,7 @@ class InterfaceGeneration {
     )
 
     val query = file.namedQueries.first()
-    assertThat(QueryInterfaceGenerator(query).kotlinImplementationSpec().toString()).isEqualTo(
+    assertThat(QueryInterfaceGenerator(query, file.generateSerialization).kotlinImplementationSpec().toString()).isEqualTo(
       """
       |public data class LeftJoin(
       |  public val val1: kotlin.String,
@@ -75,7 +75,7 @@ class InterfaceGeneration {
     )
 
     val query = file.namedQueries.first()
-    assertThat(QueryInterfaceGenerator(query).kotlinImplementationSpec().toString()).isEqualTo(
+    assertThat(QueryInterfaceGenerator(query, file.generateSerialization).kotlinImplementationSpec().toString()).isEqualTo(
       """
       |public data class LeftJoin(
       |  public val value_: kotlin.String,
@@ -108,7 +108,7 @@ class InterfaceGeneration {
     )
 
     val query = file.namedQueries.first()
-    assertThat(QueryInterfaceGenerator(query).kotlinImplementationSpec().toString()).isEqualTo(
+    assertThat(QueryInterfaceGenerator(query, file.generateSerialization).kotlinImplementationSpec().toString()).isEqualTo(
       """
       |public data class UnionOfBoth(
       |  public val value_: kotlin.String?,
@@ -137,7 +137,7 @@ class InterfaceGeneration {
     )
 
     val query = file.namedQueries.first()
-    assertThat(QueryInterfaceGenerator(query).kotlinImplementationSpec().toString()).isEqualTo(
+    assertThat(QueryInterfaceGenerator(query, file.generateSerialization).kotlinImplementationSpec().toString()).isEqualTo(
       """
       |public data class UnionOfBoth(
       |  public val value_: kotlin.collections.List,
@@ -170,7 +170,7 @@ class InterfaceGeneration {
     )
 
     val query = file.namedQueries.first()
-    assertThat(QueryInterfaceGenerator(query).kotlinImplementationSpec().toString()).isEqualTo(
+    assertThat(QueryInterfaceGenerator(query, file.generateSerialization).kotlinImplementationSpec().toString()).isEqualTo(
       """
       |public data class UnionOfBoth(
       |  public val value_: kotlin.collections.List,
@@ -199,7 +199,7 @@ class InterfaceGeneration {
     )
 
     val query = file.namedQueries.first()
-    assertThat(QueryInterfaceGenerator(query).kotlinImplementationSpec().toString()).isEqualTo(
+    assertThat(QueryInterfaceGenerator(query, file.generateSerialization).kotlinImplementationSpec().toString()).isEqualTo(
       """
       |public data class UnionOfBoth(
       |  public val value_: kotlin.collections.List?,
@@ -228,7 +228,7 @@ class InterfaceGeneration {
     )
 
     val query = file.namedQueries.first()
-    assertThat(QueryInterfaceGenerator(query).kotlinImplementationSpec().toString()).isEqualTo(
+    assertThat(QueryInterfaceGenerator(query, file.generateSerialization).kotlinImplementationSpec().toString()).isEqualTo(
       """
       |public data class UnionOfBoth(
       |  public val value_: kotlin.collections.List,
@@ -269,7 +269,7 @@ class InterfaceGeneration {
     )
 
     val query = file.namedQueries.first()
-    assertThat(QueryInterfaceGenerator(query).kotlinImplementationSpec().toString()).isEqualTo(
+    assertThat(QueryInterfaceGenerator(query, file.generateSerialization).kotlinImplementationSpec().toString()).isEqualTo(
       """
       |public data class Select_all(
       |  public val _id: kotlin.Long,
@@ -314,7 +314,7 @@ class InterfaceGeneration {
     )
 
     val query = file.namedQueries.first()
-    assertThat(QueryInterfaceGenerator(query).kotlinImplementationSpec().toString()).isEqualTo(
+    assertThat(QueryInterfaceGenerator(query, file.generateSerialization).kotlinImplementationSpec().toString()).isEqualTo(
       """
       |public data class SelectFromView(
       |  public val name: kotlin.String?,
@@ -714,7 +714,7 @@ class InterfaceGeneration {
     )
 
     val query = file.namedQueries.first()
-    assertThat(QueryInterfaceGenerator(query).kotlinImplementationSpec().toString()).isEqualTo(
+    assertThat(QueryInterfaceGenerator(query, file.generateSerialization).kotlinImplementationSpec().toString()).isEqualTo(
       """
       |public data class SelectWithCast(
       |  public val foo: kotlin.String?,

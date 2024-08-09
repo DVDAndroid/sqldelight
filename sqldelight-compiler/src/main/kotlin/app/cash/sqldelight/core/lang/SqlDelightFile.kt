@@ -58,15 +58,21 @@ abstract class SqlDelightFile(
     }
   }
 
-  val generateModels: Boolean? by lazy {
+  val generateSerialization: Boolean? by lazy {
     module?.let { module ->
-      SqlDelightFileIndex.getInstance(module).generateModels
+      SqlDelightFileIndex.getInstance(module).generateSerialization
     }
   }
 
   val generateAdapters: Boolean? by lazy {
     module?.let { module ->
       SqlDelightFileIndex.getInstance(module).generateAdapters
+    }
+  }
+
+  val generateImplementation: Boolean? by lazy {
+    module?.let { module ->
+      SqlDelightFileIndex.getInstance(module).generateImplementation
     }
   }
 

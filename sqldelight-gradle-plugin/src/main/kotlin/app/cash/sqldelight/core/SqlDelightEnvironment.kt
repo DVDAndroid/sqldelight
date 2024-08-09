@@ -101,8 +101,9 @@ class SqlDelightEnvironment(
 
   override var generateAsync: Boolean = properties.generateAsync
 
-  override var generateModels: Boolean = properties.generateModels
+  override var generateSerialization: Boolean = properties.generateSerialization
   override var generateAdapters: Boolean = properties.generateAdapters
+  override var generateImplementation: Boolean = properties.generateImplementation
 
   override fun module(vFile: VirtualFile) = module
 
@@ -185,7 +186,7 @@ class SqlDelightEnvironment(
       logger("----- END ${migrationFile.name} in $timeTaken ms ------")
     }
 
-    if (!properties.generateModels) {
+    if (properties.generateImplementation) {
       sourceFile?.let {
         SqlDelightCompiler.writeDatabaseInterface(module, it, moduleName, writer)
         if (it is SqlDelightQueriesFile) {
@@ -298,8 +299,9 @@ class SqlDelightEnvironment(
     override val isConfigured = true
     override val deriveSchemaFromMigrations = properties.deriveSchemaFromMigrations
 
-    override val generateModels = properties.generateModels
+    override val generateSerialization = properties.generateSerialization
     override val generateAdapters = properties.generateAdapters
+    override val generateImplementation = properties.generateImplementation
 
     override fun outputDirectory(file: SqlDelightFile) = outputDirectories()
     override fun outputDirectories(): List<String> {

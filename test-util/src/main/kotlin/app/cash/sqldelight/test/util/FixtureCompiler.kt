@@ -143,7 +143,7 @@ object FixtureCompiler {
       )
     }
 
-    if (generateDb && (environment.generateModels || environment.generateAdapters)) {
+    if (generateDb && (environment.generateSerialization || environment.generateAdapters)) {
       SqlDelightCompiler.writeDatabaseInterface(environment.module, file!!, "testmodule", fileWriter)
       SqlDelightCompiler.writeImplementations(
         environment.module,

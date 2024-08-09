@@ -35,7 +35,7 @@ import kotlinx.serialization.Serializable
 
 internal class TableInterfaceGenerator(
   private val table: LazyQuery,
-  private val generateModels: Boolean,
+  private val generateSerialization: Boolean,
   private val generateAdapters: Boolean,
 ) {
   private val typeName = allocateName(table.tableName).capitalize()
@@ -45,7 +45,7 @@ internal class TableInterfaceGenerator(
   fun kotlinImplementationSpec(): Pair<TypeSpec?, TypeSpec?> {
     val typeSpec = TypeSpec.classBuilder(typeName)
       .addModifiers(DATA)
-    if (generateModels) {
+    if (generateSerialization) {
       typeSpec.addAnnotation(serializableAnnotation)
     }
 
@@ -71,7 +71,7 @@ internal class TableInterfaceGenerator(
       val typeWithoutAnnotations = javaType.copy(annotations = emptyList())
       val annotations = buildList {
         addAll(javaType.annotations)
-        if (generateModels) add(serializableAnnotation)
+        if (generateSerialization) add(serializableAnnotation)
       }
       typeSpec.addProperty(
         PropertySpec.builder(columnName, typeWithoutAnnotations)
@@ -124,7 +124,7 @@ internal class TableInterfaceGenerator(
       .primaryConstructor(constructor.build())
       .build()
 
-    if (!generateModels) {
+    if (!generateSerialization) {
       modelType = null
     }
     if (!generateAdapters) {

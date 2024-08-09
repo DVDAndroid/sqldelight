@@ -32,7 +32,6 @@ import com.alecstrong.sql.psi.core.psi.SqlCreateVirtualTableStmt
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.NameAllocator
 import java.io.Closeable
@@ -107,12 +106,12 @@ object SqlDelightCompiler {
     val fileSpec = FileSpec.builder(packageName, queryWrapperType.name!!)
       // TODO: Remove these when kotlinpoet supports top level types.
       .addImport("$packageName.$implementationFolder", "newInstance", "schema")
-      .apply {
-        var index = 0
-        fileIndex.dependencies.forEach {
-          addAliasedImport(ClassName(it.packageName, it.className), "${it.className}${index++}")
-        }
-      }
+//      .apply {
+//        var index = 0
+//        fileIndex.dependencies.forEach {
+//          addAliasedImport(ClassName(it.packageName, it.className), "${it.className}${index++}")
+//        }
+//      }
       .addType(queryWrapperType)
       .build()
 
@@ -144,7 +143,7 @@ object SqlDelightCompiler {
           tryWithElement(statement) {
             val generator = TableInterfaceGenerator(
               query,
-              file.generateModels ?: true,
+              file.generateSerialization ?: true,
               file.generateAdapters ?: true,
             )
             val (clazz, adapter) = generator.kotlinImplementationSpec()
@@ -196,7 +195,7 @@ object SqlDelightCompiler {
         val fileSpec = FileSpec.builder(namedQuery.interfaceType.packageName, namedQuery.name)
           .apply {
             tryWithElement(namedQuery.select) {
-              val generator = QueryInterfaceGenerator(namedQuery)
+              val generator = QueryInterfaceGenerator(namedQuery, file.generateSerialization == true)
               addType(generator.kotlinImplementationSpec())
             }
           }

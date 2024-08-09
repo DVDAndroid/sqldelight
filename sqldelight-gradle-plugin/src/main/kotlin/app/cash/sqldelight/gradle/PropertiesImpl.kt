@@ -25,7 +25,8 @@ data class SqlDelightDatabasePropertiesImpl(
   @Input override val deriveSchemaFromMigrations: Boolean = false,
   @Input override val treatNullAsUnknownForEquality: Boolean = false,
   @Input override val generateAsync: Boolean = false,
-  @Input override val generateModels: Boolean,
+  @Input override val generateImplementation: Boolean,
+  @Input override val generateSerialization: Boolean,
   @Input override val generateAdapters: Boolean,
   // Only used by intellij plugin to help with resolution.
   @Internal override val rootDirectory: File,

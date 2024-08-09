@@ -17,25 +17,37 @@ package app.cash.sqldelight.core.compiler
 
 import app.cash.sqldelight.core.capitalize
 import app.cash.sqldelight.core.compiler.model.NamedQuery
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.DATA
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
+import kotlinx.serialization.Serializable
 
-class QueryInterfaceGenerator(val query: NamedQuery) {
+class QueryInterfaceGenerator(val query: NamedQuery, val generateSerialization: Boolean) {
+
+  private val serializableAnnotation = AnnotationSpec.builder(Serializable::class).build()
+
   fun kotlinImplementationSpec(): TypeSpec {
     val typeSpec = TypeSpec.classBuilder(query.name.capitalize())
       .addModifiers(DATA)
+    if (generateSerialization) {
+      typeSpec.addAnnotation(serializableAnnotation)
+    }
 
     val constructor = FunSpec.constructorBuilder()
 
     query.resultColumns.forEach {
       val javaType = it.javaType
       val typeWithoutAnnotations = javaType.copy(annotations = emptyList())
+      val annotations = buildList {
+        addAll(javaType.annotations)
+        if (generateSerialization) add(serializableAnnotation)
+      }
       typeSpec.addProperty(
         PropertySpec.builder(it.name, typeWithoutAnnotations)
           .initializer(it.name)
-          .addAnnotations(javaType.annotations)
+          .addAnnotations(annotations)
           .build(),
       )
       constructor.addParameter(it.name, typeWithoutAnnotations)
