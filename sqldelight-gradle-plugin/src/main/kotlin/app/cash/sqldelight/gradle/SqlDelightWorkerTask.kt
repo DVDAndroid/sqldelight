@@ -22,7 +22,7 @@ abstract class SqlDelightWorkerTask : SourceTask() {
   abstract val classpath: ConfigurableFileCollection
 
   internal fun workQueue(): WorkQueue =
-    workerExecutor.processIsolation {
+    workerExecutor.classLoaderIsolation {
       it.classpath.from(classpath)
     }
 }
