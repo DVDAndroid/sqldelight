@@ -33,6 +33,7 @@ import com.alecstrong.sql.psi.core.SqlCoreEnvironment
 import com.alecstrong.sql.psi.core.SqlFileBase
 import com.alecstrong.sql.psi.core.psi.SqlCreateTableStmt
 import com.alecstrong.sql.psi.core.psi.SqlStmt
+import com.intellij.codeInsight.codeVision.CodeVisionState.NotReady.result
 import com.intellij.core.CoreApplicationEnvironment
 import com.intellij.mock.MockModule
 import com.intellij.openapi.extensions.ExtensionPointName
@@ -65,7 +66,7 @@ class SqlDelightEnvironment(
   override var dialect: SqlDelightDialect,
   moduleName: String,
   private val sourceFolders: List<File> = compilationUnit.sourceFolders
-    .filter { it.folder.exists() && !it.dependency }
+    .filter { it.folder.exists() }
     .map { it.folder },
   private val dependencyFolders: List<File> = compilationUnit.sourceFolders
     .filter { it.folder.exists() && it.dependency }
@@ -99,6 +100,9 @@ class SqlDelightEnvironment(
   override var treatNullAsUnknownForEquality: Boolean = properties.treatNullAsUnknownForEquality
 
   override var generateAsync: Boolean = properties.generateAsync
+
+  override var generateModels: Boolean = properties.generateModels
+  override var generateAdapters: Boolean = properties.generateAdapters
 
   override fun module(vFile: VirtualFile) = module
 
@@ -181,10 +185,12 @@ class SqlDelightEnvironment(
       logger("----- END ${migrationFile.name} in $timeTaken ms ------")
     }
 
-    sourceFile?.let {
-      SqlDelightCompiler.writeDatabaseInterface(module, it, moduleName, writer)
-      if (it is SqlDelightQueriesFile) {
-        SqlDelightCompiler.writeImplementations(module, it, moduleName, writer)
+    if (!properties.generateModels) {
+      sourceFile?.let {
+        SqlDelightCompiler.writeDatabaseInterface(module, it, moduleName, writer)
+        if (it is SqlDelightQueriesFile) {
+          SqlDelightCompiler.writeImplementations(module, it, moduleName, writer)
+        }
       }
     }
 
@@ -291,6 +297,9 @@ class SqlDelightEnvironment(
     override val dependencies = properties.dependencies
     override val isConfigured = true
     override val deriveSchemaFromMigrations = properties.deriveSchemaFromMigrations
+
+    override val generateModels = properties.generateModels
+    override val generateAdapters = properties.generateAdapters
 
     override fun outputDirectory(file: SqlDelightFile) = outputDirectories()
     override fun outputDirectories(): List<String> {

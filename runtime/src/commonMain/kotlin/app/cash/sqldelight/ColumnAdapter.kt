@@ -23,7 +23,7 @@ interface ColumnAdapter<T : Any, S> {
   /**
    * @return [databaseValue] decoded as type [T].
    */
-  fun decode(databaseValue: S): T
+  fun decode(database: Transacter?, databaseValue: S): T
 
   /**
    * @return [value] encoded as database type [S].

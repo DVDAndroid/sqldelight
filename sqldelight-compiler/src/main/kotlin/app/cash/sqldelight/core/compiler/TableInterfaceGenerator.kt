@@ -29,18 +29,25 @@ import com.alecstrong.sql.psi.core.psi.NamedElement
 import com.alecstrong.sql.psi.core.psi.SqlStmt
 import com.alecstrong.sql.psi.core.psi.SqlTypes
 import com.intellij.psi.util.PsiTreeUtil
-import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.KModifier.DATA
-import com.squareup.kotlinpoet.ParameterSpec
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeSpec
+import kotlinx.serialization.Serializable
 
-internal class TableInterfaceGenerator(private val table: LazyQuery) {
+internal class TableInterfaceGenerator(
+  private val table: LazyQuery,
+  private val generateModels: Boolean,
+  private val generateAdapters: Boolean,
+) {
   private val typeName = allocateName(table.tableName).capitalize()
 
-  fun kotlinImplementationSpec(): TypeSpec {
+  private val serializableAnnotation = AnnotationSpec.builder(Serializable::class).build()
+
+  fun kotlinImplementationSpec(): Pair<TypeSpec?, TypeSpec?> {
     val typeSpec = TypeSpec.classBuilder(typeName)
       .addModifiers(DATA)
+    if (generateModels) {
+      typeSpec.addAnnotation(serializableAnnotation)
+    }
 
     val identifier = PsiTreeUtil.getPrevSiblingOfType(
       PsiTreeUtil.getParentOfType(table.tableName, SqlStmt::class.java),
@@ -62,10 +69,14 @@ internal class TableInterfaceGenerator(private val table: LazyQuery) {
       } ?: columnType.type().javaType
 
       val typeWithoutAnnotations = javaType.copy(annotations = emptyList())
+      val annotations = buildList {
+        addAll(javaType.annotations)
+        if (generateModels) add(serializableAnnotation)
+      }
       typeSpec.addProperty(
         PropertySpec.builder(columnName, typeWithoutAnnotations)
           .initializer(columnName)
-          .addAnnotations(javaType.annotations)
+          .addAnnotations(annotations)
           .build(),
       )
       val param = ParameterSpec.builder(columnName, typeWithoutAnnotations)
@@ -77,27 +88,26 @@ internal class TableInterfaceGenerator(private val table: LazyQuery) {
       .map { (it.element as NamedElement).columnDefSource()!! }
       .mapNotNull { (it.columnType as ColumnTypeMixin).adapter() }
 
+    var adaptersType: TypeSpec? = null
     if (adapters.isNotEmpty()) {
-      typeSpec.addType(
-        TypeSpec.classBuilder(ADAPTER_NAME)
-          .primaryConstructor(
-            FunSpec.constructorBuilder()
-              .addParameters(
-                adapters.map {
-                  ParameterSpec.builder(it.name, it.type, *it.modifiers.toTypedArray()).build()
-                },
-              )
-              .build(),
-          )
-          .addProperties(
-            adapters.map {
-              PropertySpec.builder(it.name, it.type, *it.modifiers.toTypedArray())
-                .initializer(it.name)
-                .build()
-            },
-          )
-          .build(),
-      )
+      adaptersType = TypeSpec.classBuilder(typeName + "_" + ADAPTER_NAME)
+        .primaryConstructor(
+          FunSpec.constructorBuilder()
+            .addParameters(
+              adapters.map {
+                ParameterSpec.builder(it.name, it.type, *it.modifiers.toTypedArray()).build()
+              },
+            )
+            .build(),
+        )
+        .addProperties(
+          adapters.map {
+            PropertySpec.builder(it.name, it.type, *it.modifiers.toTypedArray())
+              .initializer(it.name)
+              .build()
+          },
+        )
+        .build()
     }
 
     table.query.columns
@@ -110,8 +120,17 @@ internal class TableInterfaceGenerator(private val table: LazyQuery) {
         typeSpec.addType(it)
       }
 
-    return typeSpec
+    var modelType: TypeSpec? = typeSpec
       .primaryConstructor(constructor.build())
       .build()
+
+    if (!generateModels) {
+      modelType = null
+    }
+    if (!generateAdapters) {
+      adaptersType = null
+    }
+
+    return modelType to adaptersType
   }
 }

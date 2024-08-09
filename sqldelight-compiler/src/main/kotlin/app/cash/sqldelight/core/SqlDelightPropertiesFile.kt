@@ -36,6 +36,8 @@ interface SqlDelightDatabaseProperties : Serializable {
   val treatNullAsUnknownForEquality: Boolean
   val rootDirectory: File
   val generateAsync: Boolean
+  val generateModels: Boolean
+  val generateAdapters: Boolean
 }
 
 /**

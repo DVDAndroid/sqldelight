@@ -49,6 +49,11 @@ interface SqlDelightFileIndex {
 
   val deriveSchemaFromMigrations: Boolean
 
+  // doesn't generate DatabaseImpl + data class @Serializable
+  val generateModels: Boolean
+
+  val generateAdapters: Boolean
+
   /**
    * @return The package name for a given SqlDelight file. Equal to the relative path under its
    * fixture's sqldelight directory.

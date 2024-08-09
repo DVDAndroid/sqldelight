@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class FloatColumnAdapterTest {
   @Test fun decode() {
-    assertEquals(10.0f, FloatColumnAdapter.decode(10.0), 1e-6f)
+    assertEquals(10.0f, FloatColumnAdapter.decode(null, 10.0), 1e-6f)
   }
 
   @Test fun encode() {

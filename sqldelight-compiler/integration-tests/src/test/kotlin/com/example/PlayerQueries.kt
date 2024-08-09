@@ -34,7 +34,7 @@ public class PlayerQueries(
       Player.Name(cursor.getString(0)!!),
       cursor.getLong(1)!!,
       cursor.getString(2)?.let { Team.Name(it) },
-      playerAdapter.shootsAdapter.decode(cursor.getString(3)!!)
+      playerAdapter.shootsAdapter.decode(null, cursor.getString(3)!!)
     )
   }
 
@@ -67,7 +67,7 @@ public class PlayerQueries(
       Player.Name(cursor.getString(0)!!),
       cursor.getLong(1)!!,
       cursor.getString(2)?.let { Team.Name(it) },
-      playerAdapter.shootsAdapter.decode(cursor.getString(3)!!)
+      playerAdapter.shootsAdapter.decode(null, cursor.getString(3)!!)
     )
   }
 
@@ -90,7 +90,7 @@ public class PlayerQueries(
       Player.Name(cursor.getString(0)!!),
       cursor.getLong(1)!!,
       cursor.getString(2)?.let { Team.Name(it) },
-      playerAdapter.shootsAdapter.decode(cursor.getString(3)!!)
+      playerAdapter.shootsAdapter.decode(null, cursor.getString(3)!!)
     )
   }
 
@@ -114,7 +114,7 @@ public class PlayerQueries(
       Player.Name(cursor.getString(0)!!),
       cursor.getLong(1)!!,
       cursor.getString(2)?.let { Team.Name(it) },
-      playerAdapter.shootsAdapter.decode(cursor.getString(3)!!)
+      playerAdapter.shootsAdapter.decode(null, cursor.getString(3)!!)
     )
   }
 
@@ -170,7 +170,7 @@ public class PlayerQueries(
       Player.Name(cursor.getString(0)!!),
       cursor.getLong(1)!!,
       cursor.getString(2)?.let { Team.Name(it) },
-      playerAdapter.shootsAdapter.decode(cursor.getString(3)!!)
+      playerAdapter.shootsAdapter.decode(null, cursor.getString(3)!!)
     )
   }
 

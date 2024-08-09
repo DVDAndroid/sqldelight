@@ -97,13 +97,13 @@ internal fun IntermediateType.cursorGetter(columnIndex: Int): CodeBlock {
       PsiTreeUtil.getParentOfType(column, Queryable::class.java)!!.tableExposed().adapterName
     if (javaType.isNullable) {
       CodeBlock.of(
-        "%L?.let { $adapterName.%N.decode(%L) }",
+        "%L?.let { $adapterName.%N.decode(database, %L) }",
         cursorGetter,
         adapter,
         dialectType.decode(CodeBlock.of("it")),
       )
     } else {
-      CodeBlock.of("$adapterName.%N.decode(%L)", adapter, dialectType.decode(cursorGetter))
+      CodeBlock.of("$adapterName.%N.decode(database, %L)", adapter, dialectType.decode(cursorGetter))
     }
   } ?: run {
     val encodedType = cursorGetter

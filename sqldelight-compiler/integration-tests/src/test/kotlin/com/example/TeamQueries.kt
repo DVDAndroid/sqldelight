@@ -41,7 +41,7 @@ public class TeamQueries(
     mapper(
       Team.Name(cursor.getString(0)!!),
       cursor.getLong(1)!!,
-      cursor.getString(2)?.let { teamAdapter.inner_typeAdapter.decode(it) },
+      cursor.getString(2)?.let { teamAdapter.inner_typeAdapter.decode(null, it) },
       cursor.getString(3)!!
     )
   }

@@ -22,8 +22,7 @@ internal fun LazyQuery.needsAdapters() = when (tableName.parent) {
 internal fun LazyQuery.adapterProperty(): PropertySpec {
   val adapterType = ClassName(
     (tableName.containingFile as SqlDelightFile).packageName!!,
-    SqlDelightCompiler.allocateName(tableName).capitalize(),
-    ADAPTER_NAME,
+    SqlDelightCompiler.allocateName(tableName).capitalize() + "_" + ADAPTER_NAME,
   )
   return PropertySpec.builder(adapterName, adapterType, KModifier.PRIVATE)
     .initializer(adapterName)
@@ -36,4 +35,4 @@ private fun LazyQuery.columns() = when (val parentRule = tableName.parent) {
 }
 
 internal val LazyQuery.adapterName
-  get() = "${SqlDelightCompiler.allocateName(tableName)}$ADAPTER_NAME"
+  get() = "${SqlDelightCompiler.allocateName(tableName)}_$ADAPTER_NAME"

@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class ShortColumnAdapterTest {
   @Test fun decode() {
-    assertEquals(10, ShortColumnAdapter.decode(10))
+    assertEquals(10, ShortColumnAdapter.decode(null, 10))
   }
 
   @Test fun encode() {

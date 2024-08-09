@@ -27,6 +27,8 @@ dependencies {
 
   implementation libs.jgrapht
 
+  implementation "org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.1"
+
   compileOnly libs.sqliteJdbc
   compileOnly(projects.sqldelightCompiler.environment) {
     targetConfiguration = "shadow"

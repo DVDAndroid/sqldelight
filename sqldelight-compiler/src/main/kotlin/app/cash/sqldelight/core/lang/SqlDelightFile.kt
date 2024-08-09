@@ -58,6 +58,18 @@ abstract class SqlDelightFile(
     }
   }
 
+  val generateModels: Boolean? by lazy {
+    module?.let { module ->
+      SqlDelightFileIndex.getInstance(module).generateModels
+    }
+  }
+
+  val generateAdapters: Boolean? by lazy {
+    module?.let { module ->
+      SqlDelightFileIndex.getInstance(module).generateAdapters
+    }
+  }
+
   override fun getVirtualFile(): VirtualFile? {
     if (myOriginalFile != null) return myOriginalFile.virtualFile
     return super.getVirtualFile()

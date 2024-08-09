@@ -171,8 +171,8 @@ class SelectQueryGenerator(
         .takeIf { it.size > 1 }
         ?.map { assumedCompatibleType ->
           (assumedCompatibleType.column?.columnType as ColumnTypeMixin?)?.let { columnTypeMixin ->
-            val tableAdapterName = "${(assumedCompatibleType.column!!.parent as SqlCreateTableStmt).name()}$ADAPTER_NAME"
-            val columnAdapterName = "${allocateName((columnTypeMixin.parent as SqlColumnDef).columnName)}$ADAPTER_NAME"
+            val tableAdapterName = "${(assumedCompatibleType.column!!.parent as SqlCreateTableStmt).name()}_$ADAPTER_NAME"
+            val columnAdapterName = "${allocateName((columnTypeMixin.parent as SqlColumnDef).columnName)}_$ADAPTER_NAME"
             "$tableAdapterName.$columnAdapterName"
           }
         }

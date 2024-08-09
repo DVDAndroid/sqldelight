@@ -24,6 +24,8 @@ interface SqlDelightProjectService {
   var dialect: SqlDelightDialect
   var treatNullAsUnknownForEquality: Boolean
   var generateAsync: Boolean
+  var generateModels: Boolean
+  var generateAdapters: Boolean
 
   fun setDialect(dialect: SqlDelightDialect, shouldInvalidate: Boolean) {
     this.dialect = dialect

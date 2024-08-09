@@ -28,6 +28,8 @@ abstract class SqlDelightDatabase @Inject constructor(
   abstract val packageName: Property<String>
   abstract val schemaOutputDirectory: DirectoryProperty
   abstract val srcDirs: ConfigurableFileCollection
+  val generateModels: Property<Boolean> = project.objects.property(Boolean::class.java).convention(true)
+  val generateAdapters: Property<Boolean> = project.objects.property(Boolean::class.java).convention(true)
   val deriveSchemaFromMigrations: Property<Boolean> = project.objects.property(Boolean::class.java).convention(false)
   val verifyMigrations: Property<Boolean> = project.objects.property(Boolean::class.java).convention(false)
   val verifyDefinitions: Property<Boolean> = project.objects.property(Boolean::class.java).convention(true)
@@ -171,6 +173,8 @@ abstract class SqlDelightDatabase @Inject constructor(
         deriveSchemaFromMigrations = deriveSchemaFromMigrations.get(),
         treatNullAsUnknownForEquality = treatNullAsUnknownForEquality.get(),
         generateAsync = generateAsync.get(),
+        generateModels = generateModels.get(),
+        generateAdapters = generateAdapters.get(),
       )
     } finally {
       recursionGuard = false

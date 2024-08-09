@@ -67,9 +67,9 @@ internal class DatabaseGenerator(
     val typeSpec = TypeSpec.interfaceBuilder(fileIndex.className)
       .addSuperinterface(if (generateAsync) SUSPENDING_TRANSACTER_TYPE else TRANSACTER_TYPE)
 
-    fileIndex.dependencies.forEach {
-      typeSpec.addSuperinterface(ClassName(it.packageName, it.className))
-    }
+//    fileIndex.dependencies.forEach {
+//      typeSpec.addSuperinterface(ClassName(it.packageName, it.className))
+//    }
 
     val invoke = FunSpec.builder("invoke")
       .returns(ClassName(fileIndex.packageName, fileIndex.className))
@@ -197,7 +197,7 @@ internal class DatabaseGenerator(
         typeSpec.addProperty(
           PropertySpec.builder(file.queriesName, file.queriesType)
             .addModifiers(OVERRIDE)
-            .initializer("%T($DRIVER_NAME$adapters)", file.queriesType)
+            .initializer("%T(this, $DRIVER_NAME$adapters)", file.queriesType)
             .build(),
         )
       }

@@ -142,8 +142,14 @@ object SqlDelightCompiler {
       val fileSpec = FileSpec.builder(packageName, allocateName(query.tableName))
         .apply {
           tryWithElement(statement) {
-            val generator = TableInterfaceGenerator(query)
-            addType(generator.kotlinImplementationSpec())
+            val generator = TableInterfaceGenerator(
+              query,
+              file.generateModels ?: true,
+              file.generateAdapters ?: true,
+            )
+            val (clazz, adapter) = generator.kotlinImplementationSpec()
+            clazz?.let { addType(it) }
+            adapter?.let { addType(it) }
           }
         }
         .build()

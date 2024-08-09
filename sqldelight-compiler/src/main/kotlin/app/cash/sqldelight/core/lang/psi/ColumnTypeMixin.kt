@@ -253,7 +253,7 @@ internal abstract class ColumnTypeMixin(
       return wrappedType.encode(CodeBlock.of("%L.${columnName.text}", value))
     }
 
-    override fun decode(value: CodeBlock) = CodeBlock.of("%T(%L)", javaType, wrappedType.decode(value))
+    override fun decode(value: CodeBlock) = CodeBlock.of("%T(null, %L)", javaType, wrappedType.decode(value))
   }
 
   private val ASTNode.prevVisibleSibling: ASTNode?

@@ -19,7 +19,7 @@ package app.cash.sqldelight
 class EnumColumnAdapter<T : Enum<T>> @PublishedApi internal constructor(
   private val enumValues: Array<out T>,
 ) : ColumnAdapter<T, String> {
-  override fun decode(databaseValue: String): T = enumValues.first { it.name == databaseValue }
+  override fun decode(database: Transacter?, databaseValue: String): T = enumValues.first { it.name == databaseValue }
 
   override fun encode(value: T) = value.name
 }
